@@ -1,0 +1,29 @@
+#left{
+  float: left;
+  width: 50%
+}
+
+#righ{
+  float: right;
+  width: 40%
+}
+
+#map{
+  height: 300px;
+  width: 100%;
+}
+
+#streetview{
+  height: 300px;
+  width: 100%;
+}
+
+#img{
+  height: 450px;
+  max-width: 30%;
+}
+
+#tudo{
+  float: right;
+  width:  50%
+}
