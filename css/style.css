@@ -14,20 +14,29 @@
 }
 
 #streetview{
-  height: 400px;
+  height: 50vh;
   width: 100%;
 }
 
 #img{
-  height: 450px;
+  height: 50vh;
   max-width: 30%;
+}
+
+#imageBorder{
+  margin-bottom: 5px;
+  border: 1px solid black;
+  border-style: dashed;
+  margin-top: 5px;
+  margin-left: 5px;
+
 }
 
 div#saveButton,
 #sAVE {
 	background-color: lightgrey;
 	cursor: pointer;
-	border: 1px solid black;
+	border: 1px dashed black;
 	width: 30%;
 	text-align: center;
 	font-family: "Circular Std";

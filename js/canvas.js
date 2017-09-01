@@ -16,10 +16,12 @@ function handleFileSelect(evt) {
     reader.onloadend = function(e) {
         var image = new Image();
         image.src = e.target.result;
+        var width = image.naturalWidth; // this will be 300
+        var height = image.naturalHeight;
         image.onload = function() {
             var canvas = document.getElementById("canvas");
             var ctx = canvas.getContext("2d");
-            ctx.drawImage(image, 0, 0, 100, 100);
+            ctx.drawImage(image, 50,50, 400, 400);
         };
     };
     reader.readAsDataURL(f);
