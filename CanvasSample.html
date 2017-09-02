@@ -5,10 +5,15 @@
   <title>Piexifjs Sample</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
   <script src="js/piexif.js"></script>
-  <script src = "js/canvas.js"></script>
+  <script src = "js/fileHandler.js"></script>
   <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
+  <div class="navbar">
+    <a href="CanvasSample.html">Insert gps coords</a>
+    <a href="ReadExif.html">Read gps coords</a>
+  </div>
+
 	<script src = "js/maps.js"> </script>
 	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcuLZurSQM6euHylZ4Yh-TQYcdSpgEWm8&callback=initMap"></script>
 	<div id = "left">
@@ -34,7 +39,6 @@
 		<div id="saveButton">Output Canvas as JPEG</div>
 		<div id="sAVE">Save Image</div>
 	</div>
-
    <script>
         document.getElementById("saveButton").onclick = function() {
             // make exif data

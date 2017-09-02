@@ -21,7 +21,7 @@ function handleFileSelect(evt) {
         image.onload = function() {
             var canvas = document.getElementById("canvas");
             var ctx = canvas.getContext("2d");
-            ctx.drawImage(image, 50,50, 400, 400);
+            ctx.drawImage(image, 120,50, 400, 400);
         };
     };
     reader.readAsDataURL(f);
