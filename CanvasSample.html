@@ -41,18 +41,7 @@
 	</div>
    <script>
         document.getElementById("saveButton").onclick = function() {
-            // make exif data
-            var zerothIfd = {};
-            var exifIfd = {};
             var gpsIfd = {};
-            zerothIfd[piexif.ImageIFD.Make] = "Maker Name";
-            zerothIfd[piexif.ImageIFD.XResolution] = [777, 1];
-            zerothIfd[piexif.ImageIFD.YResolution] = [777, 1];
-            zerothIfd[piexif.ImageIFD.Software] = "Piexifjs";
-            exifIfd[piexif.ExifIFD.DateTimeOriginal] = "2010:10:10 10:10:10";
-            exifIfd[piexif.ExifIFD.LensMake] = "Lens Maker";
-            exifIfd[piexif.ExifIFD.Sharpness] = 777;
-            exifIfd[piexif.ExifIFD.LensSpecification] = [[1, 1], [1, 1], [1, 1], [1, 1]];
             gpsIfd[piexif.GPSIFD.GPSVersionID] = [7, 7, 7, 7];
             gpsIfd[piexif.GPSIFD.GPSDateStamp] = "1999:99:99 99:99:99";
             var lat = document.getElementById("latitude").value;
@@ -61,7 +50,7 @@
             gpsIfd[piexif.GPSIFD.GPSLatitude] = piexif.GPSHelper.degToDmsRational(lat);
             gpsIfd[piexif.GPSIFD.GPSLongitudeRef] = lng < 0 ? 'W' : 'E';
             gpsIfd[piexif.GPSIFD.GPSLongitude] = piexif.GPSHelper.degToDmsRational(lng);
-            var exifObj = {"0th":zerothIfd, "Exif":exifIfd, "GPS":gpsIfd};
+            var exifObj = {"GPS":gpsIfd};
             // get exif binary as "string" type
             var exifBytes = piexif.dump(exifObj);
             // get JPEG image from canvas
