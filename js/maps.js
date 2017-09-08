@@ -1,6 +1,6 @@
  var markers = [];
     var uniqueId = 1;
-      window.onload =function initMap() {
+      function initMap() {
         //Map options
         var options = {
           zoom:18,
@@ -8,9 +8,11 @@
         }
         //New map
         var map = new google.maps.Map(document.getElementById('map'), options);
+        var latitude = Number(document.getElementById("latitude").innerHTML);
+        var longitude = Number(document.getElementById("longitude").innerHTML);
         //StreetView options
         var streetOption ={
-          position: {lat: 37.773972,lng:-122.431297},
+          position: {lat: latitude,lng:longitude},
         }
         //New streetView
         var streetview = new google.maps.StreetViewPanorama(document.getElementById('streetview'), streetOption);
@@ -69,7 +71,3 @@
             //  }
           }
       };
-
-
-
-      google.maps.event.addDomListener(window, "load", initialize);

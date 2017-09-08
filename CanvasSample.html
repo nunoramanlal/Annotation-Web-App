@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <title>Piexifjs Sample</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
   <script src="js/piexif.js"></script>
   <script src = "js/fileHandler.js"></script>
   <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -13,14 +14,6 @@
     <a href="CanvasSample.html">Insert gps coords</a>
     <a href="ReadExif.html">Read gps coords</a>
   </div>
-
-	<script src = "js/maps.js"> </script>
-	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcuLZurSQM6euHylZ4Yh-TQYcdSpgEWm8&callback=initMap"></script>
-	<div id = "left">
-		<div id="map"></div>
-		<div id ="streetview"></div>
-	</div>
-
 	<div id="right">
 		<div id="up">
 			Select image file<br>
@@ -30,10 +23,8 @@
 		  <canvas id="canvas" width="500" height="500"></canvas><br>
   </div>
 		<div id ="gpsInfo">
-			<form>
-			<input type="text" name = "latitude" id="latitude" placeholder="Latitude" required size="35" > <p></p>
-			<input type="text" name = "longitude" id="longitude" placeholder="Longitude" required size="35"> <p></p>
-			</form>
+      <p id = "latitude"></p>
+      <p id = "longitude"></p>
 		</div>
 		<div id="buttons">
 		<div id="saveButton">Output Canvas as JPEG</div>
@@ -54,7 +45,7 @@
             // get exif binary as "string" type
             var exifBytes = piexif.dump(exifObj);
             // get JPEG image from canvas
-             var jpegData = document.getElementById("canvas").toDataURL("image/jpeg", 1.0);
+            var jpegData = document.getElementById("canvas").toDataURL("image/jpeg", 1.0);
              // insert exif binary into JPEG binary(DataURL)
              var exifModified = piexif.insert(exifBytes, jpegData);
              // for Modern IE
@@ -66,8 +57,17 @@
                  var ua = new Uint8Array(data);
                  var blob = new Blob([ua], {type: "image/jpeg"});
                  document.getElementById("sAVE").onclick = saveJpeg(blob);
-        };
+      };
     </script>
   </div>
+
+  	<div id = "left">
+        <button onclick="initMap()">click</button>
+  		<div id="map"></div>
+  		<div id ="streetview"></div>
+      <script src = "js/maps.js"> </script>
+    	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcuLZurSQM6euHylZ4Yh-TQYcdSpgEWm8"></script>
+  	</div>
+
 </body>
 </html>
