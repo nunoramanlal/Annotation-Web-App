@@ -32,6 +32,9 @@
         function(event){
           DeleteMarker();
           var location = event.latLng;
+          console.log(event.latLng);
+          document.getElementById("latitude").innerHTML = location.lat();
+          document.getElementById("longitude").innerHTML= location.lng();
           //Add marker
           var marker = new google.maps.Marker({
               position: location,
@@ -42,10 +45,9 @@
 
           google.maps.event.addListener(marker, "click", function (e) {
 
-              var content = 'Latitude: ' + location.lat() + '<br />Longitude: ' + location.lng();
-              content += "<br /><input type = 'button' value = 'Delete' onclick = 'DeleteMarker();' value = 'Delete' />";
-              document.getElementById("latitude").value = location.lat();
-              document.getElementById("longitude").value = location.lng();
+              var content = "<input type = 'button' value = 'Delete' onclick = 'DeleteMarker();' value = 'Delete' />";
+              document.getElementById("latitude").innerHTML = location.lat();
+              document.getElementById("longitude").innerHTML= location.lng();
               var infoWindow = new google.maps.InfoWindow({
                   content: content
               });

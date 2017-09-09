@@ -12,31 +12,31 @@
 <body>
   <div class="navbar">
     <a href="CanvasSample.html">Insert gps coords</a>
-    <a href="ReadExif.html">Read gps coords</a>
   </div>
 	<div id="right">
 		<div id="up">
-			Select image file<br>
 			<input type="file" id="files" class="form" onchange="handleFileSelect(event);" />
 		</div>
     <div id="imageBorder" >
-		  <canvas id="canvas" width="500" height="500"></canvas><br>
+		  <canvas id="canvas" width="300" height="300"></canvas><br>
   </div>
+  <div id = "space"></div>
 		<div id ="gpsInfo">
-      <p id = "latitude"></p>
-      <p id = "longitude"></p>
+      <p align = "center" id = "latitude">latitude</p>
+      <div id = "space"></div>
+      <p align = "center" id = "longitude">longitude</p>
 		</div>
+    <div id = "space"></div>
 		<div id="buttons">
-		<div id="saveButton">Output Canvas as JPEG</div>
-		<div id="sAVE">Save Image</div>
-	</div>
+		  <div id="saveButton">Double click to save image with the above coordinates</div>
+	  </div>
    <script>
         document.getElementById("saveButton").onclick = function() {
             var gpsIfd = {};
             gpsIfd[piexif.GPSIFD.GPSVersionID] = [7, 7, 7, 7];
             gpsIfd[piexif.GPSIFD.GPSDateStamp] = "1999:99:99 99:99:99";
-            var lat = document.getElementById("latitude").value;
-            var lng = document.getElementById("longitude").value
+            var lat = Number(document.getElementById("latitude").innerHTML);
+            var lng = Number(document.getElementById("longitude").innerHTML);
             gpsIfd[piexif.GPSIFD.GPSLatitudeRef] = lat < 0 ? 'S' : 'N';
             gpsIfd[piexif.GPSIFD.GPSLatitude] = piexif.GPSHelper.degToDmsRational(lat);
             gpsIfd[piexif.GPSIFD.GPSLongitudeRef] = lng < 0 ? 'W' : 'E';
@@ -56,13 +56,13 @@
                  }
                  var ua = new Uint8Array(data);
                  var blob = new Blob([ua], {type: "image/jpeg"});
-                 document.getElementById("sAVE").onclick = saveJpeg(blob);
+                 document.getElementById("saveButton").onclick = saveJpeg(blob);
       };
     </script>
   </div>
 
   	<div id = "left">
-        <button onclick="initMap()">click</button>
+        <button onclick="initMap()">Display map</button>
   		<div id="map"></div>
   		<div id ="streetview"></div>
       <script src = "js/maps.js"> </script>

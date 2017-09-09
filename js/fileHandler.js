@@ -21,7 +21,7 @@ function handleFileSelect(evt) {
         image.onload = function() {
             var canvas = document.getElementById("canvas");
             var ctx = canvas.getContext("2d");
-            ctx.drawImage(image, 120,50, 400, 400);
+            ctx.drawImage(image, 0,0,300, 300);
         };
         if(containsExif(dataUrl)===1){
             document.getElementById("latitude").innerHTML = (getExifLatitude(dataUrl));
@@ -48,32 +48,61 @@ function containsExif(dataURL){
 }
 
 function getExifLatitude(dataURL){
+  var ref = getExifLatitudeRef(dataURL);
   var exif = piexif.load(dataURL);
   var ifd = "GPS"
   for (var tag in exif[ifd]) {
     var str=exif[ifd][tag];
     if(piexif.TAGS[ifd][tag]["name"]==="GPSLatitude"){
-      return dmsToDegrees(str);
+      return dmsToDegrees(str, ref);
     }
   }
 }
 
+function getExifLatitudeRef(dataURL){
+  var exif = piexif.load(dataURL);
+  var ifd = "GPS"
+  for (var tag in exif[ifd]) {
+    var str=exif[ifd][tag];
+    if(piexif.TAGS[ifd][tag]["name"]==="GPSLatitudeRef"){
+      return str;
+    }
+  }
+
+}
+
 function getExifLongitude(dataURL) {
+  var ref = getExifLongitudeRef(dataURL);
   var exif = piexif.load(dataURL);
   var ifd = "GPS"
   for (var tag in exif[ifd]) {
     var str=exif[ifd][tag];
     if(piexif.TAGS[ifd][tag]["name"]==="GPSLongitude"){
-      return dmsToDegrees(str);
+      return dmsToDegrees(str, ref);
     }
   }
 }
 
-function dmsToDegrees(dms){
+function getExifLongitudeRef(dataURL) {
+  var exif = piexif.load(dataURL);
+  var ifd = "GPS"
+  for (var tag in exif[ifd]) {
+    var str=exif[ifd][tag];
+    if(piexif.TAGS[ifd][tag]["name"]==="GPSLongitudeRef"){
+      return str;
+    }
+  }
+}
+
+function dmsToDegrees(dms, ref){
   var d = dms[0][0]/dms[0][1];
   var m = (dms[1][0]/dms[1][1])/60;
   var s = (dms[2][0]/dms[2][1])/3600;
-  return d+m+s;
+  if(ref==='N' || ref === 'E')
+    return Number(d+m+s);
+  else {
+    return Number(d+m+s)*-1
+  }
 }
 
 function createRequestAsJSON(str){
@@ -109,7 +138,7 @@ function upload(request) {
           parseResponse((faceData));
         },
         error: function (data, textStatus, errorThrown) {
-          
+
         }
       })
 }
