@@ -1,4 +1,4 @@
- var markers = [];
+    var markers = [];
     var uniqueId = 1;
       function initMap() {
         //Map options
@@ -10,6 +10,7 @@
         var map = new google.maps.Map(document.getElementById('map'), options);
         var latitude = Number(document.getElementById("latitude").innerHTML);
         var longitude = Number(document.getElementById("longitude").innerHTML);
+
         //StreetView options
         var streetOption ={
           position: {lat: latitude,lng:longitude},
