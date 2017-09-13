@@ -8,6 +8,6 @@ If there isn't any Exif data, the applications invoke the Google 'Cloud Vision A
 If one wants to change the geographic coordinates of an uploaded .jpeg file, it can be done by adding a marker on the map over the place. Once the image is saved, the coordinates of where the marker is set are assigned to the exif data of the .jpeg file.
 
 <ul>
-<li><b> File uploadded must be a .jpeg </b></li>
+<li><b> File uploaded must be a .jpeg </b></li>
 </ul>
 
