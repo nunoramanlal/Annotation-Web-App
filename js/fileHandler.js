@@ -17,9 +17,10 @@ function handleFileSelect(evt) {
         if (containsExif(dataUrl) === 1) {
             var latitude = getExifLatitude(dataUrl);
             var longitude = getExifLongitude(dataUrl);
+            var pov = getExifPov(dataUrl);
             document.getElementById("latitude").innerHTML = latitude;
             document.getElementById("longitude").innerHTML = longitude;
-            initMap(latitude, longitude);
+            initMap(latitude, longitude, pov);
         } else {
             var base = dataUrl.replace("data:image/jpeg;base64,", "");
             (upload(createRequestAsJSON(base)));
@@ -32,8 +33,12 @@ function save() {
     var gpsIfd = {};
     var lat = Number(document.getElementById("latitude").innerHTML);
     var lng = Number(document.getElementById("longitude").innerHTML);
+    var pov = Number(document.getElementById("heading-cell").innerHTML);
+    console.log(pov);
     gpsIfd[piexif.GPSIFD.GPSVersionID] = [7, 7, 7, 7];
     gpsIfd[piexif.GPSIFD.GPSDateStamp] = "1999:99:99 99:99:99";
+    gpsIfd[piexif.GPSIFD.GPSImgDirectionRef] = 'T';
+    gpsIfd[piexif.GPSIFD.GPSImgDirection] = piexif.GPSHelper.degToDmsRational(pov);
     gpsIfd[piexif.GPSIFD.GPSLatitudeRef] = lat < 0 ? 'S' : 'N';
     gpsIfd[piexif.GPSIFD.GPSLatitude] = piexif.GPSHelper.degToDmsRational(lat);
     gpsIfd[piexif.GPSIFD.GPSLongitudeRef] = lng < 0 ? 'W' : 'E';
@@ -101,7 +106,6 @@ function getExifLatitudeRef(dataURL) {
             return str;
         }
     }
-
 }
 
 function getExifLongitude(dataURL) {
@@ -125,6 +129,17 @@ function getExifLongitudeRef(dataURL) {
             return str;
         }
     }
+}
+
+function getExifPov(dataURL){
+  var exif = piexif.load(dataURL);
+  var ifd = "GPS"
+  for (var tag in exif[ifd]) {
+      var str = exif[ifd][tag];
+      if (piexif.TAGS[ifd][tag]["name"] === "GpsImgDirection") {
+          return dmsToDegrees(str, 'N');
+      }
+  }
 }
 
 function dmsToDegrees(dms, ref) {
@@ -185,7 +200,7 @@ function parseResponse(faceData) {
     }
     document.getElementById("latitude").innerHTML = latitude;
     document.getElementById("longitude").innerHTML = longitude;
-    initMap(latitude, longitude);
+    initMap(latitude, longitude, 90);
 }
 
 function containsCoords(faceData) {
@@ -195,7 +210,7 @@ function containsCoords(faceData) {
 var markers = [];
 var uniqueId = 1;
 
-function initMap(lat, long) {
+function initMap(lat, long, pov) {
     //Map options
     var options = {
         zoom: 18,
@@ -205,6 +220,7 @@ function initMap(lat, long) {
     var map = new google.maps.Map(document.getElementById('map'), options);
     var latitude = lat;
     var longitude = long;
+    var pointOfView = pov;
 
     //StreetView options
     var streetOption = {
@@ -212,6 +228,11 @@ function initMap(lat, long) {
             lat: latitude,
             lng: longitude
         },
+        pov: {
+            heading: pointOfView,
+            pitch: 0
+        },
+        visible: true
     }
     //New streetView
     var streetview = new google.maps.StreetViewPanorama(document.getElementById('streetview'), streetOption);
@@ -226,6 +247,12 @@ function initMap(lat, long) {
     });
 
     map.overlayMapTypes.insertAt(0, streetViewLayer);
+
+    streetview.addListener('pov_changed', function() {
+      document.getElementById('heading-cell').innerHTML = streetview.getPov().heading;
+      document.getElementById('pitch-cell').innerHTML = streetview.getPov().pitch;
+       });
+
     //Listen for click on map
     google.maps.event.addListener(map, 'dblclick',
         function(event) {
@@ -255,6 +282,12 @@ function initMap(lat, long) {
             marker.id = uniqueId;
             uniqueId++;
         });
+
+        streetViewLayer.addListener('pov_changed', function() {
+          document.getElementById('heading-cell').innerHTML = streetViewLayer.getPov().heading;
+          document.getElementById('pitch-cell').innerHTML = streetViewLayer.getPov().pitch;
+           });
+
 }
 
 function DeleteMarker() {
