@@ -136,7 +136,7 @@ function getExifPov(dataURL){
   var ifd = "GPS"
   for (var tag in exif[ifd]) {
       var str = exif[ifd][tag];
-      if (piexif.TAGS[ifd][tag]["name"] === "GpsImgDirection") {
+      if (piexif.TAGS[ifd][tag]["name"] === "GPSImgDirection") {
           return dmsToDegrees(str, 'N');
       }
   }
@@ -245,7 +245,6 @@ function initMap(lat, long, pov) {
         },
         tileSize: new google.maps.Size(256, 256)
     });
-
     map.overlayMapTypes.insertAt(0, streetViewLayer);
 
     streetview.addListener('pov_changed', function() {
