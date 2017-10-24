@@ -248,38 +248,19 @@ function initMap(lat, long, pov) {
     map.overlayMapTypes.insertAt(0, streetViewLayer);
 
     streetview.addListener('pov_changed', function() {
-      document.getElementById('heading-cell').innerHTML = streetview.getPov().heading;
-      document.getElementById('pitch-cell').innerHTML = streetview.getPov().pitch;
+      document.getElementById("latitude").innerHTML = streetview.getPosition().lat();
+      document.getElementById("longitude").innerHTML = streetview.getPosition().lng();
        });
-
+     streetview.addListener('pov_changed', function() {
+       document.getElementById('heading-cell').innerHTML = streetview.getPov().heading;
+       document.getElementById('pitch-cell').innerHTML = streetview.getPov().pitch;
+        });
     //Listen for click on map
-    google.maps.event.addListener(map, 'dblclick',
+    google.maps.event.addListener(map, 'click',
         function(event) {
-            DeleteMarker();
             var location = event.latLng;
             document.getElementById("latitude").innerHTML = location.lat();
             document.getElementById("longitude").innerHTML = location.lng();
-            //Add marker
-            var marker = new google.maps.Marker({
-                position: location,
-                map: map,
-                draggable: true
-            });
-
-            google.maps.event.addListener(marker, "click", function(e) {
-
-                var content = "<input type = 'button' value = 'Delete' onclick = 'DeleteMarker();' value = 'Delete' />";
-                document.getElementById("latitude").innerHTML = location.lat();
-                document.getElementById("longitude").innerHTML = location.lng();
-                var infoWindow = new google.maps.InfoWindow({
-                    content: content
-                });
-                infoWindow.open(map, marker);
-            });
-            markers.push(marker);
-            //Set unique id
-            marker.id = uniqueId;
-            uniqueId++;
         });
 
         streetViewLayer.addListener('pov_changed', function() {
